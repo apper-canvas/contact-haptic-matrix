@@ -65,13 +65,13 @@ let filtered = [...contacts];
     // Search filter
     if (searchTerm) {
       const search = searchTerm.toLowerCase();
-      filtered = filtered.filter(contact =>
-        `${contact.firstName} ${contact.lastName}`.toLowerCase().includes(search) ||
-        contact.email.toLowerCase().includes(search) ||
-        contact.phone.toLowerCase().includes(search) ||
-        contact.company.toLowerCase().includes(search) ||
-        (contact.position && contact.position.toLowerCase().includes(search)) ||
-        (contact.tags && contact.tags.some(tag => tag.toLowerCase().includes(search)))
+filtered = filtered.filter(contact =>
+        `${contact.first_name_c || ''} ${contact.last_name_c || ''}`.toLowerCase().includes(search) ||
+        (contact.email_c && contact.email_c.toLowerCase().includes(search)) ||
+        (contact.phone_c && contact.phone_c.toLowerCase().includes(search)) ||
+        (contact.company_c && contact.company_c.toLowerCase().includes(search)) ||
+        (contact.position_c && contact.position_c.toLowerCase().includes(search)) ||
+        (contact.tags_c && contact.tags_c.some(tag => tag.toLowerCase().includes(search)))
       );
     }
     

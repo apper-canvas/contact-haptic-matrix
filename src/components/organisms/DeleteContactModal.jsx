@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { contactService } from "@/services/api/contactService";
+import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
 import Avatar from "@/components/atoms/Avatar";
-import ApperIcon from "@/components/ApperIcon";
 
 const DeleteContactModal = ({ isOpen, onClose, contact, onDelete }) => {
   const [loading, setLoading] = useState(false);
@@ -15,8 +15,8 @@ const DeleteContactModal = ({ isOpen, onClose, contact, onDelete }) => {
     setLoading(true);
     
     try {
-      await contactService.delete(contact.Id);
-      toast.success(`${contact.firstName} ${contact.lastName} deleted successfully`);
+await contactService.delete(contact.Id);
+      toast.success(`${contact.first_name_c} ${contact.last_name_c} deleted successfully`);
       onDelete(contact);
       onClose();
     } catch (error) {
@@ -63,27 +63,25 @@ const DeleteContactModal = ({ isOpen, onClose, contact, onDelete }) => {
                 This action cannot be undone. The contact will be permanently deleted.
               </p>
               
-              {/* Contact Preview */}
+{/* Contact Preview */}
               <div className="p-4 bg-gradient-to-r from-slate-50 to-slate-100 rounded-lg border border-slate-200 mb-6">
                 <div className="flex items-center gap-4">
                   <Avatar
-                    src={contact.photo}
-                    alt={`${contact.firstName} ${contact.lastName}`}
-                    size="default"
-                    className="shrink-0"
+                    src={contact.photo_c}
+                    alt={`${contact.first_name_c} ${contact.last_name_c}`}
+                    size="lg"
                   />
                   
-                  <div className="text-left flex-1">
-                    <h3 className="font-bold text-slate-900">
-                      {contact.firstName} {contact.lastName}
-                    </h3>
-                    <p className="text-sm text-slate-600">{contact.position}</p>
-                    <p className="text-sm font-medium text-primary-600">{contact.company}</p>
+                  <div className="flex-1 text-left">
+                    <h4 className="font-semibold text-slate-900">
+                      {contact.first_name_c} {contact.last_name_c}
+                    </h4>
+                    <p className="text-sm text-slate-600">{contact.position_c}</p>
+                    <p className="text-sm font-medium text-primary-600">{contact.company_c}</p>
                   </div>
                 </div>
               </div>
             </div>
-            
             {/* Actions */}
             <div className="flex gap-3 p-6 pt-0">
               <Button

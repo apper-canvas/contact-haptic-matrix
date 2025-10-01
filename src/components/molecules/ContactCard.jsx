@@ -39,16 +39,16 @@ className={cn(
     >
       <div className="flex items-start gap-4">
         <Avatar
-          src={contact.photo}
-          alt={`${contact.firstName} ${contact.lastName}`}
+src={contact.photo_c}
+          alt={`${contact.first_name_c} ${contact.last_name_c}`}
           size="lg"
-          className="shrink-0"
+          className="ring-2 ring-primary-200"
         />
         
         <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="text-lg font-bold text-slate-900 truncate">
-              {contact.firstName} {contact.lastName}
+          <div className="flex items-start justify-between gap-2 mb-2">
+            <h3 className="font-bold text-slate-900 text-lg truncate">
+              {contact.first_name_c} {contact.last_name_c}
             </h3>
 <div className="flex items-center gap-1 opacity-100 transition-opacity duration-200 shrink-0 ml-2">
               <Button
@@ -83,24 +83,24 @@ className={cn(
               {contact.position}
             </p>
 <p className="text-sm font-semibold text-primary-600 truncate">
-              {contact.company}
+              {contact.company_c}
             </p>
           </div>
           
-          <div className="space-y-1 mb-4">
+          <div className="space-y-1">
             <div className="flex items-center gap-2 text-sm text-slate-600">
-              <ApperIcon name="Mail" className="w-4 h-4 shrink-0" />
-              <span className="truncate">{contact.email}</span>
+              <ApperIcon name="Mail" className="w-3.5 h-3.5" />
+              <span className="truncate">{contact.email_c}</span>
             </div>
             <div className="flex items-center gap-2 text-sm text-slate-600">
-              <ApperIcon name="Phone" className="w-4 h-4 shrink-0" />
-              <span className="truncate">{contact.phone}</span>
+              <ApperIcon name="Phone" className="w-3.5 h-3.5" />
+              <span className="truncate">{contact.phone_c}</span>
             </div>
           </div>
           
-          {contact.tags && contact.tags.length > 0 && (
+{contact.tags_c && contact.tags_c.length > 0 && (
             <div className="flex flex-wrap gap-1">
-              {contact.tags.slice(0, 3).map((tag) => (
+              {contact.tags_c.slice(0, 3).map((tag) => (
                 <Badge
                   key={tag}
                   variant={tagColors[tag] || "outline"}
@@ -109,9 +109,9 @@ className={cn(
                   {tag}
                 </Badge>
               ))}
-              {contact.tags.length > 3 && (
+              {contact.tags_c.length > 3 && (
                 <Badge variant="outline" className="text-xs">
-                  +{contact.tags.length - 3}
+                  +{contact.tags_c.length - 3}
                 </Badge>
               )}
             </div>

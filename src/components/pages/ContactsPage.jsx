@@ -35,7 +35,7 @@ const ContactsPage = () => {
     setRefreshTrigger(prev => prev + 1);
   };
 
-  const handleContactDeleted = (deletedContact) => {
+const handleContactDeleted = (deletedContact) => {
     if (selectedContact?.Id === deletedContact.Id) {
       setSelectedContact(null);
       setShowMobileDetail(false);
