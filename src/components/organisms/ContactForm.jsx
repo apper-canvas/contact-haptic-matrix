@@ -6,7 +6,7 @@ import FormField from "@/components/molecules/FormField";
 import Input from "@/components/atoms/Input";
 import ApperIcon from "@/components/ApperIcon";
 
-const ContactForm = ({ contact, onSave, onCancel, isEdit = false, service }) => {
+const ContactForm = ({ contact, onSave, onCancel, isEdit = false, service, entityType = 'contact' }) => {
 const [formData, setFormData] = useState({
     first_name_c: "",
     last_name_c: "",
@@ -133,7 +133,7 @@ if (tagInput.trim() && !formData.tags_c.includes(tagInput.trim().toLowerCase()))
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
-label="First Name"
+            label={`${entityType === 'lead' ? 'Lead' : 'Contact'} First Name`}
             required
             error={errors.first_name_c}
             value={formData.first_name_c}
@@ -239,11 +239,11 @@ label="First Name"
           </div>
         </FormField>
         
-        <FormField label="Additional Notes">
+<FormField label="Additional Notes">
           <textarea
-value={formData.notes_c}
+            value={formData.notes_c}
             onChange={(e) => handleInputChange("notes_c", e.target.value)}
-            placeholder="Add any additional notes or comments about this contact..."
+            placeholder={`Add any additional notes or comments about this ${entityType}...`}
             rows="4"
             className="flex w-full rounded-lg border border-green-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 focus:border-primary-500 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 resize-vertical"
           />
@@ -266,7 +266,7 @@ value={formData.notes_c}
             icon={loading ? "Loader2" : "Save"}
             className={loading ? "opacity-75" : "bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800"}
           >
-            {loading ? "Saving..." : isEdit ? "Update Contact" : "Create Contact"}
+{loading ? "Saving..." : isEdit ? `Update ${entityType === 'lead' ? 'Lead' : 'Contact'}` : `Create ${entityType === 'lead' ? 'Lead' : 'Contact'}`}
           </Button>
         </div>
       </form>

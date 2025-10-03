@@ -4,7 +4,7 @@ import ContactForm from "@/components/organisms/ContactForm";
 import Button from "@/components/atoms/Button";
 import ApperIcon from "@/components/ApperIcon";
 
-const ContactModal = ({ isOpen, onClose, contact, onSave, isEdit = false, service }) => {
+const ContactModal = ({ isOpen, onClose, contact, onSave, isEdit = false, service, entityType = 'contact' }) => {
   if (!isOpen) return null;
 
   const handleSave = (savedContact) => {
@@ -37,7 +37,7 @@ const ContactModal = ({ isOpen, onClose, contact, onSave, isEdit = false, servic
             {/* Header */}
 <div className="flex items-center justify-between p-6 border-b border-green-200 bg-gradient-to-r from-green-50 to-white rounded-t-2xl">
               <h2 className="text-2xl font-bold text-slate-900">
-                {isEdit ? "Edit Contact" : "Add New Contact"}
+                {isEdit ? `Edit ${entityType === 'lead' ? 'Lead' : 'Contact'}` : `Add New ${entityType === 'lead' ? 'Lead' : 'Contact'}`}
               </h2>
               <Button
                 variant="ghost"
@@ -57,6 +57,7 @@ const ContactModal = ({ isOpen, onClose, contact, onSave, isEdit = false, servic
                 onCancel={onClose}
                 isEdit={isEdit}
                 service={service}
+                entityType={entityType}
               />
             </div>
           </motion.div>

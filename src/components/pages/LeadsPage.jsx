@@ -187,6 +187,7 @@ const LeadsPage = () => {
           onSave={handleSaveContact}
           isEdit={!!editingContact}
           service={leadService}
+          entityType='lead'
         />
       )}
 
