@@ -78,14 +78,32 @@ if (!formData.first_name_c.trim()) {
 
     setLoading(true);
     
-    try {
-let savedContact;
+try {
+      let savedContact;
       if (isEdit && contact) {
         savedContact = await (service || contactService).update(contact.Id, formData);
         toast.success("Contact updated successfully!");
-} else {
+      } else {
         savedContact = await (service || contactService).create(formData);
         toast.success("Contact created successfully!");
+        
+        // Add watermark to photo for new contacts
+        if (savedContact && formData.photo_c) {
+          const contactName = `${formData.first_name_c} ${formData.last_name_c}`;
+          const watermarkedPhotoUrl = await contactService.addWatermarkToPhoto(
+            formData.photo_c,
+            contactName
+          );
+          
+          // If watermarking succeeded and returned a different URL, update the contact
+          if (watermarkedPhotoUrl && watermarkedPhotoUrl !== formData.photo_c) {
+            await contactService.update(savedContact.Id, {
+              ...formData,
+              photo_c: watermarkedPhotoUrl
+            });
+            savedContact.photo_c = watermarkedPhotoUrl;
+          }
+        }
       }
       
       onSave(savedContact);
