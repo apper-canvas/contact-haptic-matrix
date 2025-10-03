@@ -16,7 +16,8 @@ const ContactList = ({
   onEditContact, 
   onDeleteContact,
   onRefresh,
-  refreshTrigger 
+  refreshTrigger,
+  service
 }) => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -25,10 +26,10 @@ const ContactList = ({
 
   const loadContacts = async () => {
     setLoading(true);
-    setError("");
+setError("");
     
     try {
-      const data = await contactService.getAll();
+      const data = await service.getAll();
       setContacts(data);
     } catch (err) {
       console.error("Error loading contacts:", err);
@@ -42,9 +43,9 @@ const ContactList = ({
     loadContacts();
   }, [refreshTrigger]);
 
-  const handleDeleteContact = async (contact) => {
+const handleDeleteContact = async (contact) => {
     try {
-      await contactService.delete(contact.Id);
+      await service.delete(contact.Id);
       toast.success(`${contact.firstName} ${contact.lastName} deleted successfully`);
       await loadContacts();
       onDeleteContact(contact);

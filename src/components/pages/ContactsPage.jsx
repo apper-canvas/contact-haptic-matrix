@@ -105,7 +105,7 @@ return (
           </div>
         </div>
 
-        {/* Right Content Area - Contact Cards */}
+{/* Right Content Area - Contact Cards */}
         <div className="flex-1 bg-white">
           <ContactList
             selectedContact={selectedContact}
@@ -114,6 +114,7 @@ return (
             onDeleteContact={handleDeleteContact}
             onRefresh={() => setRefreshTrigger(prev => prev + 1)}
             refreshTrigger={refreshTrigger}
+            service={contactService}
           />
         </div>
       </div>
