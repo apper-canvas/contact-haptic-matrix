@@ -86,15 +86,6 @@ try {
         savedContact = await (service || contactService).update(contact.Id, formData);
         toast.success("Contact updated successfully!");
         
-        // Send email if email_send_c is "Send"
-        if (formData.email_send_c === "Send") {
-          const emailResult = await contactService.sendUpdateEmail(savedContact);
-          if (emailResult.success) {
-            toast.success("Update email sent successfully!");
-          } else {
-            toast.error(`Failed to send email: ${emailResult.message}`);
-          }
-        }
       } else {
         savedContact = await (service || contactService).create(formData);
         toast.success("Contact created successfully!");

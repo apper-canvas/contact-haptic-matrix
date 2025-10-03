@@ -166,8 +166,11 @@ export const contactService = {
     }
   },
 
-  async update(id, contactData) {
+async update(id, contactData) {
 try {
+      // Check if email should be sent based on the email_send_c value
+      const shouldSendEmail = contactData.email_send_c === "Send";
+      
       const tags = Array.isArray(contactData.tags_c) ? contactData.tags_c.join(',') : contactData.tags_c || '';
       
       const params = {
@@ -182,6 +185,7 @@ try {
           photo_c: contactData.photo_c || '',
           tags_c: tags,
           notes_c: contactData.notes_c || '',
+          email_send_c: contactData.email_send_c,
           updated_at_c: new Date().toISOString()
         }]
       };
@@ -211,10 +215,22 @@ try {
         
         if (successful.length > 0) {
           const updatedContact = successful[0].data;
-          return {
+          const formattedContact = {
             ...updatedContact,
             tags_c: updatedContact.tags_c ? updatedContact.tags_c.split(',').map(t => t.trim()) : []
           };
+          
+          // Send email if user selected "Send" status
+          if (shouldSendEmail) {
+            const emailResult = await this.sendUpdateEmail(formattedContact);
+            if (emailResult.success) {
+              toast.success("Contact updated and email sent successfully!");
+            } else {
+              toast.error(`Contact updated but email failed: ${emailResult.message}`);
+            }
+          }
+          
+          return formattedContact;
         }
       }
       
