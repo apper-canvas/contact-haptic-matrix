@@ -167,7 +167,7 @@ export const contactService = {
   },
 
   async update(id, contactData) {
-    try {
+try {
       const tags = Array.isArray(contactData.tags_c) ? contactData.tags_c.join(',') : contactData.tags_c || '';
       
       const params = {
@@ -222,6 +222,43 @@ export const contactService = {
     } catch (error) {
       console.error("Error updating contact:", error?.response?.data?.message || error.message);
       throw error;
+    }
+  },
+
+  sendUpdateEmail: async (contactData) => {
+    try {
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+
+      const result = await apperClient.functions.invoke(
+        import.meta.env.VITE_SEND_CONTACT_UPDATE_EMAIL,
+        {
+          body: JSON.stringify({
+            contactId: contactData.Id,
+            firstName: contactData.first_name_c,
+            lastName: contactData.last_name_c,
+            email: contactData.email_c,
+            company: contactData.company_c,
+            position: contactData.position_c
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      if (result.success === false) {
+        console.info(`apper_info: Got an error in this function: ${import.meta.env.VITE_SEND_CONTACT_UPDATE_EMAIL}. The response body is: ${JSON.stringify(result)}.`);
+        return { success: false, message: result.message };
+      }
+
+      return { success: true, message: result.message };
+    } catch (error) {
+      console.info(`apper_info: Got this error in this function: ${import.meta.env.VITE_SEND_CONTACT_UPDATE_EMAIL}. The error is: ${error.message}`);
+      return { success: false, message: error.message };
     }
   },
 
