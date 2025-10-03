@@ -57,10 +57,12 @@ const ContactDetail = ({ contact, onEdit, onClose }) => {
             </div>
         </div>
         <div className="flex items-center gap-6">
-            <Avatar
+<Avatar
                 src={contact.photo_c}
                 alt={`${contact.first_name_c} ${contact.last_name_c}`}
                 size="xl"
+                watermark={true}
+                contactName={`${contact.first_name_c} ${contact.last_name_c}`}
                 className="ring-4 ring-primary-100" />
             <div className="text-center">
                 <h3 className="text-3xl font-bold text-slate-900 mb-2">

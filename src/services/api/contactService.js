@@ -255,9 +255,45 @@ export const contactService = {
       }
       
       throw new Error("Failed to delete contact");
-    } catch (error) {
+} catch (error) {
       console.error("Error deleting contact:", error?.response?.data?.message || error.message);
       throw error;
+    }
+  },
+
+  async addWatermarkToPhoto(photoUrl, contactName) {
+    try {
+      if (!photoUrl || !contactName) {
+        return photoUrl;
+      }
+
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+
+      const result = await apperClient.functions.invoke(
+        import.meta.env.VITE_ADD_WATERMARK_TO_CONTACT_PHOTO,
+        {
+          body: JSON.stringify({
+            photoUrl,
+            contactName
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      if (result.success && result.watermarkedImage) {
+        return result.watermarkedImage;
+      }
+
+      return photoUrl;
+    } catch (error) {
+      console.info(`apper_info: Got an error in this function: ${import.meta.env.VITE_ADD_WATERMARK_TO_CONTACT_PHOTO}. The error is: ${error.message}`);
+      return photoUrl;
     }
   }
 };
