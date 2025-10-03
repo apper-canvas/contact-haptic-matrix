@@ -78,7 +78,7 @@ src={contact.photo_c}
             </div>
           </div>
           
-          <div className="space-y-1 mb-3">
+<div className="space-y-1 mb-3">
             <p className="text-sm font-medium text-slate-700 truncate">
               {contact.position}
             </p>
@@ -86,6 +86,18 @@ src={contact.photo_c}
               {contact.company_c}
             </p>
           </div>
+          
+          {contact.email_send_c && (
+            <div className="mb-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border
+                {contact.email_send_c === 'Send' ? 'bg-gradient-to-r from-green-50 to-green-100 text-green-700 border-green-300' : 
+                 contact.email_send_c === 'New' ? 'bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 border-blue-300' : 
+                 'bg-gray-100 text-gray-700 border-gray-300'}">
+                <ApperIcon name="Send" className="w-3 h-3" />
+                <span>{contact.email_send_c}</span>
+              </div>
+            </div>
+          )}
           
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-sm text-slate-600">

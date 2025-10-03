@@ -16,7 +16,8 @@ const [formData, setFormData] = useState({
     position_c: "",
     photo_c: "",
     tags_c: [],
-    notes_c: ""
+    notes_c: "",
+    email_send_c: "New"
   });
   
   const [tagInput, setTagInput] = useState("");
@@ -28,13 +29,14 @@ if (contact) {
       setFormData({
         first_name_c: contact.first_name_c || "",
         last_name_c: contact.last_name_c || "",
-        email_c: contact.email_c || "",
+email_c: contact.email_c || "",
         phone_c: contact.phone_c || "",
         company_c: contact.company_c || "",
         position_c: contact.position_c || "",
         photo_c: contact.photo_c || "",
         tags_c: contact.tags_c || [],
-        notes_c: contact.notes_c || ""
+        notes_c: contact.notes_c || "",
+        email_send_c: contact.email_send_c || "New"
       });
     }
   }, [contact]);
@@ -186,8 +188,20 @@ if (tagInput.trim() && !formData.tags_c.includes(tagInput.trim().toLowerCase()))
           error={errors.phone_c}
           value={formData.phone_c}
           onChange={(e) => handleInputChange("phone_c", e.target.value)}
-          placeholder="Enter phone number"
+placeholder="Enter phone number"
         />
+        
+        <FormField label="Email Send Status" required>
+          <select
+            value={formData.email_send_c}
+            onChange={(e) => handleInputChange("email_send_c", e.target.value)}
+            className="flex w-full rounded-lg border border-green-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 focus:border-primary-500 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200"
+          >
+            <option value="New">New</option>
+            <option value="Send">Send</option>
+            <option value="Not send">Not send</option>
+          </select>
+        </FormField>
         
 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField

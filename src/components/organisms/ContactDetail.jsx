@@ -112,7 +112,7 @@ const ContactDetail = ({ contact, onEdit, onClose }) => {
                             </a></div>
                     </div>
                 </div>
-                <div className="space-y-4">
+<div className="space-y-4">
                     <div>
                         <label className="text-sm font-semibold text-slate-500 uppercase tracking-wide">Company
                                               </label>
@@ -123,6 +123,20 @@ const ContactDetail = ({ contact, onEdit, onClose }) => {
                             </span>
                         </div>
                     </div>
+                    {contact.email_send_c && (
+                      <div>
+                        <label className="text-sm font-semibold text-slate-500 uppercase tracking-wide">Email Send Status</label>
+                        <div className="mt-1 flex items-center gap-3">
+                          <ApperIcon name="Send" className="w-4 h-4 text-slate-500" />
+                          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium border
+                            ${contact.email_send_c === 'Send' ? 'bg-gradient-to-r from-green-50 to-green-100 text-green-700 border-green-300' : 
+                              contact.email_send_c === 'New' ? 'bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 border-blue-300' : 
+                              'bg-gray-100 text-gray-700 border-gray-300'}`}>
+                            {contact.email_send_c}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                 </div>
                 {contact.position_c && <div>
                     <label className="text-sm font-semibold text-slate-500 uppercase tracking-wide">Position
