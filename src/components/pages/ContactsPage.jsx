@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import ContactList from "@/components/organisms/ContactList";
-import ContactDetail from "@/components/organisms/ContactDetail";
-import ContactModal from "@/components/organisms/ContactModal";
-import DeleteContactModal from "@/components/organisms/DeleteContactModal";
-import Button from "@/components/atoms/Button";
+import { useNavigate } from "react-router-dom";
+import { contactService } from "@/services/api/contactService";
 import ApperIcon from "@/components/ApperIcon";
-
+import ContactList from "@/components/organisms/ContactList";
+import DeleteContactModal from "@/components/organisms/DeleteContactModal";
+import ContactModal from "@/components/organisms/ContactModal";
+import ContactDetail from "@/components/organisms/ContactDetail";
+import Button from "@/components/atoms/Button";
 const ContactsPage = () => {
+  const navigate = useNavigate();
   const [selectedContact, setSelectedContact] = useState(null);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -81,11 +83,18 @@ return (
             </div>
             
             {/* Navigation Menu */}
-            <nav className="flex-1 p-4 space-y-2">
+<nav className="flex-1 p-4 space-y-2">
               <div className="space-y-1">
-<button className="w-full flex items-center gap-3 px-3 py-2.5 text-left text-sm font-medium text-white bg-gradient-to-r from-primary-500 to-primary-600 rounded-lg shadow-sm">
+                <button className="w-full flex items-center gap-3 px-3 py-2.5 text-left text-sm font-medium text-white bg-gradient-to-r from-primary-500 to-primary-600 rounded-lg shadow-sm">
                   <ApperIcon name="Users" className="w-4 h-4" />
                   All Contacts
+                </button>
+                <button 
+                  onClick={() => navigate('/leads')}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 text-left text-sm font-medium text-slate-700 hover:bg-green-50 rounded-lg transition-colors duration-200"
+                >
+                  <ApperIcon name="Mail" className="w-4 h-4" />
+                  All Leads
                 </button>
                 <button className="w-full flex items-center gap-3 px-3 py-2.5 text-left text-sm font-medium text-slate-700 hover:bg-green-50 rounded-lg transition-colors duration-200">
                   <ApperIcon name="Star" className="w-4 h-4" />

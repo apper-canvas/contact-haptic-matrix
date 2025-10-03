@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser, clearUser } from './store/userSlice';
 import ContactsPage from "@/components/pages/ContactsPage";
+import LeadsPage from "@/components/pages/LeadsPage";
 import Login from "@/components/pages/Login";
 import Signup from "@/components/pages/Signup";
 import Callback from "@/components/pages/Callback";
@@ -11,7 +12,6 @@ import ErrorPage from "@/components/pages/ErrorPage";
 import PromptPassword from "@/components/pages/PromptPassword";
 import ResetPassword from "@/components/pages/ResetPassword";
 import Button from "@/components/atoms/Button";
-
 export const AuthContext = createContext(null);
 
 function AppContent() {
@@ -134,7 +134,7 @@ function AppContent() {
             </div>
           </header>
         )}
-        <Routes>
+<Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/callback" element={<Callback />} />
@@ -143,6 +143,7 @@ function AppContent() {
           <Route path="/reset-password/:appId/:fields" element={<ResetPassword />} />
           <Route path="/" element={isAuthenticated ? <ContactsPage /> : <Login />} />
           <Route path="/contacts" element={isAuthenticated ? <ContactsPage /> : <Login />} />
+          <Route path="/leads" element={isAuthenticated ? <LeadsPage /> : <Login />} />
         </Routes>
         <ToastContainer
           position="top-right"
