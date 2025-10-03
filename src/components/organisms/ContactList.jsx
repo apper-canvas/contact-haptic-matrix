@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { contactService } from "@/services/api/contactService";
 import ContactCard from "@/components/molecules/ContactCard";
@@ -21,7 +20,6 @@ const ContactList = ({
   service,
   entityType = 'contact'
 }) => {
-  const currentUser = useSelector((state) => state.user.user);
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -47,20 +45,14 @@ setError("");
   }, [refreshTrigger]);
 
 const handleDeleteContact = async (contact) => {
-    // Check ownership before attempting delete
-    if (currentUser?.userId !== contact.CreatedBy) {
-      toast.error(`You can only delete ${entityType}s you created`);
-      return;
-    }
-    
     try {
       await service.delete(contact.Id);
-      toast.success(`${contact.first_name_c} ${contact.last_name_c} deleted successfully`);
+      toast.success(`${contact.firstName} ${contact.lastName} deleted successfully`);
       await loadContacts();
       onDeleteContact(contact);
     } catch (error) {
-      console.error(`Error deleting ${entityType}:`, error);
-      toast.error(`Failed to delete ${entityType}. Please try again.`);
+      console.error("Error deleting contact:", error);
+      toast.error("Failed to delete contact. Please try again.");
     }
   };
 
@@ -174,7 +166,7 @@ actionText="Clear Search"
         ) : (
 <div className="p-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-{filteredContacts.map((contact) => (
+              {filteredContacts.map((contact) => (
                 <ContactCard
                   key={contact.Id}
                   contact={contact}
@@ -182,7 +174,6 @@ actionText="Clear Search"
                   onSelect={onSelectContact}
                   onEdit={onEditContact}
                   onDelete={() => handleDeleteContact(contact)}
-                  currentUser={currentUser}
                 />
               ))}
             </div>

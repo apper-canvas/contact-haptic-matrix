@@ -1,12 +1,11 @@
 import React from "react";
 import { format } from "date-fns";
 import ApperIcon from "@/components/ApperIcon";
-import Badge from "@/components/atoms/Badge";
-import Avatar from "@/components/atoms/Avatar";
 import Button from "@/components/atoms/Button";
+import Avatar from "@/components/atoms/Avatar";
+import Badge from "@/components/atoms/Badge";
 
-const ContactDetail = ({ contact, onEdit, onClose, currentUser }) => {
-  const isOwner = currentUser?.userId === contact.CreatedBy;
+const ContactDetail = ({ contact, onEdit, onClose }) => {
   if (!contact) {
     return (
 <div className="h-full flex items-center justify-center bg-gradient-to-br from-green-50 to-white">
@@ -46,19 +45,15 @@ const ContactDetail = ({ contact, onEdit, onClose, currentUser }) => {
         className="p-6 border-b border-green-200 bg-gradient-to-r from-green-50 to-white">
         <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-slate-900">Contact Details</h2>
-<div className="flex items-center gap-2">
-                {isOwner && (
-                  <Button variant="outline" onClick={() => onEdit(contact)} icon="Edit2" size="sm">Edit
-                  </Button>
-                )}
-                {isOwner && (
-                  <Button
+            <div className="flex items-center gap-2">
+                <Button variant="outline" onClick={() => onEdit(contact)} icon="Edit2" size="sm">Edit
+                                </Button>
+                <Button
                     variant="ghost"
                     onClick={onClose}
                     size="sm"
                     className="lg:hidden"
                     icon="X" />
-                )}
             </div>
         </div>
         <div className="flex items-center gap-6">

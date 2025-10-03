@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { contactService } from "@/services/api/contactService";
@@ -10,7 +9,6 @@ import ContactModal from "@/components/organisms/ContactModal";
 import ContactDetail from "@/components/organisms/ContactDetail";
 import Button from "@/components/atoms/Button";
 const ContactsPage = () => {
-  const currentUser = useSelector((state) => state.user.user);
   const navigate = useNavigate();
   const [selectedContact, setSelectedContact] = useState(null);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
@@ -109,7 +107,7 @@ return (
 
 {/* Right Content Area - Contact Cards */}
         <div className="flex-1 bg-white">
-<ContactList
+          <ContactList
             selectedContact={selectedContact}
             onSelectContact={handleSelectContact}
             onEditContact={handleEditContact}
@@ -118,7 +116,6 @@ return (
             refreshTrigger={refreshTrigger}
             service={contactService}
             entityType="contact"
-            currentUser={currentUser}
           />
         </div>
       </div>
@@ -132,12 +129,11 @@ return (
         isEdit={!!contactToEdit}
       />
 
-<DeleteContactModal
+      <DeleteContactModal
         isOpen={isDeleteModalOpen}
         onClose={handleCloseDeleteModal}
         contact={contactToDelete}
         onDelete={handleContactDeleted}
-        service={contactService}
       />
     </div>
   );
