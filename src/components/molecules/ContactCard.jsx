@@ -11,8 +11,10 @@ const ContactCard = ({
   onSelect, 
   onEdit, 
   onDelete,
-  className 
+  className,
+  currentUser
 }) => {
+  const isOwner = currentUser?.userId === contact.CreatedBy;
   const tagColors = {
     "lead": "default",
     "client": "success",
@@ -50,32 +52,34 @@ src={contact.photo_c}
             <h3 className="font-bold text-slate-900 text-lg truncate">
               {contact.first_name_c} {contact.last_name_c}
             </h3>
-<div className="flex items-center gap-1 opacity-100 transition-opacity duration-200 shrink-0 ml-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onEdit?.(contact);
-                }}
-                className="p-2 h-auto hover:bg-primary-50 hover:text-primary-600 border border-green-200"
-                title="Edit Contact"
-              >
-                <ApperIcon name="Edit2" className="w-4 h-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onDelete?.(contact);
-                }}
-                className="p-2 h-auto hover:bg-red-50 hover:text-red-600 border border-green-200"
-                title="Delete Contact"
-              >
-                <ApperIcon name="Trash2" className="w-4 h-4" />
-              </Button>
-            </div>
+{isOwner && (
+              <div className="flex items-center gap-1 opacity-100 transition-opacity duration-200 shrink-0 ml-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onEdit?.(contact);
+                  }}
+                  className="p-2 h-auto hover:bg-primary-50 hover:text-primary-600 border border-green-200"
+                  title="Edit Contact"
+                >
+                  <ApperIcon name="Edit2" className="w-4 h-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDelete?.(contact);
+                  }}
+                  className="p-2 h-auto hover:bg-red-50 hover:text-red-600 border border-green-200"
+                  title="Delete Contact"
+                >
+                  <ApperIcon name="Trash2" className="w-4 h-4" />
+                </Button>
+              </div>
+            )}
           </div>
           
           <div className="space-y-1 mb-3">

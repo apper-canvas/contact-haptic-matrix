@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import ContactList from "@/components/organisms/ContactList";
@@ -11,6 +12,7 @@ import { leadService } from "@/services/api/leadService";
 
 const LeadsPage = () => {
   const navigate = useNavigate();
+  const currentUser = useSelector((state) => state.user.user);
   const [selectedContact, setSelectedContact] = useState(null);
   const [editingContact, setEditingContact] = useState(null);
   const [deletingContact, setDeletingContact] = useState(null);
@@ -134,17 +136,19 @@ const LeadsPage = () => {
             </div>
           </header>
 
-          <ContactList
+<ContactList
             selectedContact={selectedContact}
             onSelectContact={handleSelectContact}
             onEditContact={handleEditContact}
             onDeleteContact={handleDeleteContact}
             service={leadService}
+            entityType="lead"
+            currentUser={currentUser}
           />
         </div>
 
         {/* Lead Detail Panel - Desktop */}
-        {selectedContact && (
+{selectedContact && (
           <motion.div
             initial={{ x: 400 }}
             animate={{ x: 0 }}
@@ -156,12 +160,13 @@ const LeadsPage = () => {
               onEdit={handleEditContact}
               onDelete={handleDeleteContact}
               onClose={() => setSelectedContact(null)}
+              currentUser={currentUser}
             />
           </motion.div>
         )}
 
         {/* Lead Detail Panel - Mobile */}
-        {showMobileDetail && selectedContact && (
+{showMobileDetail && selectedContact && (
           <motion.div
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
@@ -173,6 +178,7 @@ const LeadsPage = () => {
               onEdit={handleEditContact}
               onDelete={handleDeleteContact}
               onClose={handleCloseMobileDetail}
+              currentUser={currentUser}
             />
           </motion.div>
         )}
@@ -192,7 +198,7 @@ const LeadsPage = () => {
       )}
 
       {/* Delete Confirmation Modal */}
-      {showDeleteModal && deletingContact && (
+{showDeleteModal && deletingContact && (
         <DeleteContactModal
           contact={deletingContact}
           onClose={handleCloseDeleteModal}

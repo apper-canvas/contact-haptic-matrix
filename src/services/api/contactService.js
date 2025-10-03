@@ -1,4 +1,6 @@
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
+import React from "react";
+import Error from "@/components/ui/Error";
 
 const { ApperClient } = window.ApperSDK;
 
@@ -150,7 +152,7 @@ export const contactService = {
           throw new Error("Failed to create contact");
         }
         
-        if (successful.length > 0) {
+if (successful.length > 0) {
           const createdContact = successful[0].data;
           return {
             ...createdContact,
@@ -162,13 +164,31 @@ export const contactService = {
       throw new Error("Failed to create contact");
     } catch (error) {
       console.error("Error creating contact:", error?.response?.data?.message || error.message);
+      toast.error("Failed to create contact");
       throw error;
     }
   },
 
   async update(id, contactData) {
     try {
-      const tags = Array.isArray(contactData.tags_c) ? contactData.tags_c.join(',') : contactData.tags_c || '';
+      // Get current record to check ownership
+      const existingRecord = await this.getById(id);
+      if (!existingRecord) {
+        toast.error('Contact not found');
+        throw new Error('Contact not found');
+      }
+      
+      // Check if current user owns this record
+      const currentUserId = apperClient.userId;
+      if (currentUserId !== existingRecord.CreatedBy) {
+        toast.error('You can only update contacts you created');
+        throw new Error('You can only update contacts you created');
+      }
+      
+      // Format tags
+      const tags = Array.isArray(contactData.tags_c) 
+        ? contactData.tags_c.join(',')
+        : contactData.tags_c || '';
       
       const params = {
         records: [{
@@ -225,8 +245,22 @@ export const contactService = {
     }
   },
 
-  async delete(id) {
+async delete(id) {
     try {
+      // Get current record to check ownership
+      const existingRecord = await this.getById(id);
+      if (!existingRecord) {
+        toast.error('Contact not found');
+        throw new Error('Contact not found');
+      }
+      
+      // Check if current user owns this record
+      const currentUserId = apperClient.userId;
+      if (currentUserId !== existingRecord.CreatedBy) {
+        toast.error('You can only delete contacts you created');
+        throw new Error('You can only delete contacts you created');
+      }
+      
       const params = {
         RecordIds: [parseInt(id)]
       };
@@ -255,7 +289,7 @@ export const contactService = {
       }
       
       throw new Error("Failed to delete contact");
-} catch (error) {
+    } catch (error) {
       console.error("Error deleting contact:", error?.response?.data?.message || error.message);
       throw error;
     }

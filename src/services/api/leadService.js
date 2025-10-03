@@ -1,4 +1,6 @@
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
+import React from "react";
+import Error from "@/components/ui/Error";
 
 const { ApperClient } = window.ApperSDK;
 
@@ -153,8 +155,27 @@ export const leadService = {
     }
   },
 
-  async update(id, leadData) {
+async update(id, leadData) {
     try {
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+      
+      // Get current record to check ownership
+      const existingRecord = await this.getById(id);
+      if (!existingRecord) {
+        return { success: false, message: 'Lead not found' };
+      }
+      
+      // Check if current user owns this record
+      const currentUserId = apperClient.userId;
+      if (currentUserId !== existingRecord.CreatedBy) {
+        toast.error('You can only update leads you created');
+        return { success: false, message: 'You can only update leads you created' };
+      }
+      
+      // Continue with existing update logic
       const tags = Array.isArray(leadData.tags_c) ? leadData.tags_c.join(',') : leadData.tags_c || '';
       
       const params = {
@@ -208,8 +229,27 @@ export const leadService = {
     }
   },
 
-  async delete(id) {
+async delete(id) {
     try {
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+      
+      // Get current record to check ownership
+      const existingRecord = await this.getById(id);
+      if (!existingRecord) {
+        return { success: false, message: 'Lead not found' };
+      }
+      
+      // Check if current user owns this record
+      const currentUserId = apperClient.userId;
+      if (currentUserId !== existingRecord.CreatedBy) {
+        toast.error('You can only delete leads you created');
+        return { success: false, message: 'You can only delete leads you created' };
+      }
+      
+      // Continue with existing delete logic
       const params = {
         RecordIds: [parseInt(id)]
       };

@@ -1,21 +1,27 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { contactService } from "@/services/api/contactService";
 import ApperIcon from "@/components/ApperIcon";
-import Button from "@/components/atoms/Button";
 import Avatar from "@/components/atoms/Avatar";
+import Button from "@/components/atoms/Button";
 
-const DeleteContactModal = ({ isOpen, onClose, contact, onDelete }) => {
+const DeleteContactModal = ({ isOpen, onClose, contact, onDelete, service }) => {
   const [loading, setLoading] = useState(false);
+  const currentUser = useSelector((state) => state.user.user);
 
-  if (!isOpen || !contact) return null;
+const handleDelete = async () => {
+    // Check ownership before attempting delete
+    if (currentUser?.userId !== contact?.CreatedBy) {
+      toast.error('You can only delete contacts you created');
+      return;
+    }
 
-  const handleDelete = async () => {
     setLoading(true);
     
     try {
-await contactService.delete(contact.Id);
+      await (service || contactService).delete(contact.Id);
       toast.success(`${contact.first_name_c} ${contact.last_name_c} deleted successfully`);
       onDelete(contact);
       onClose();
