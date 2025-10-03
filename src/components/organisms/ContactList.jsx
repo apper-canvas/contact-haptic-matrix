@@ -17,7 +17,8 @@ const ContactList = ({
   onDeleteContact,
   onRefresh,
   refreshTrigger,
-  service
+  service,
+  entityType = 'contact'
 }) => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -72,7 +73,8 @@ filtered = filtered.filter(contact =>
         (contact.phone_c && contact.phone_c.toLowerCase().includes(search)) ||
         (contact.company_c && contact.company_c.toLowerCase().includes(search)) ||
         (contact.position_c && contact.position_c.toLowerCase().includes(search)) ||
-        (contact.tags_c && contact.tags_c.some(tag => tag.toLowerCase().includes(search)))
+        (contact.status_c && contact.status_c.toLowerCase().includes(search)) ||
+        (contact.tags_c && Array.isArray(contact.tags_c) && contact.tags_c.some(tag => tag.toLowerCase().includes(search)))
       );
     }
     
@@ -87,7 +89,7 @@ filtered = filtered.filter(contact =>
   return (
 <div className="h-full flex flex-col bg-white">
       {/* Search and Filters Header */}
-<div className="p-6 border-b border-green-200 bg-gradient-to-r from-green-50 to-white">
+<div className={`p-6 border-b ${entityType === 'lead' ? 'border-blue-200 bg-gradient-to-r from-blue-50 to-white' : 'border-green-200 bg-gradient-to-r from-green-50 to-white'}`}>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-bold text-slate-900">Contact Cards</h2>
           <Button
@@ -108,7 +110,7 @@ filtered = filtered.filter(contact =>
             size="sm"
             className="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 shadow-lg hover:shadow-xl justify-start"
           >
-            Contact
+            {entityType === 'lead' ? 'Lead' : 'Contact'}
           </Button>
           
           <SearchBar
@@ -144,10 +146,10 @@ filtered = filtered.filter(contact =>
       <div className="flex-1 overflow-y-auto">
         {filteredContacts.length === 0 ? (
           contacts.length === 0 ? (
-            <Empty
-              title="No contacts yet"
-              description="Start building your network by adding your first contact."
-actionText="Add Contact"
+<Empty
+              title={`No ${entityType}s yet`}
+              description={`Start building your network by adding your first ${entityType}.`}
+              actionText={`Add ${entityType === 'lead' ? 'Lead' : 'Contact'}`}
               onAction={() => onEditContact(null)}
               actionSize="sm"
               icon="Users"

@@ -4,7 +4,7 @@ import ContactForm from "@/components/organisms/ContactForm";
 import Button from "@/components/atoms/Button";
 import ApperIcon from "@/components/ApperIcon";
 
-const ContactModal = ({ isOpen, onClose, contact, onSave, isEdit = false }) => {
+const ContactModal = ({ isOpen, onClose, contact, onSave, isEdit = false, service }) => {
   if (!isOpen) return null;
 
   const handleSave = (savedContact) => {
@@ -51,11 +51,12 @@ const ContactModal = ({ isOpen, onClose, contact, onSave, isEdit = false }) => {
             
             {/* Content */}
             <div className="p-6">
-              <ContactForm
+<ContactForm
                 contact={contact}
                 onSave={handleSave}
                 onCancel={onClose}
                 isEdit={isEdit}
+                service={service}
               />
             </div>
           </motion.div>

@@ -6,7 +6,7 @@ import FormField from "@/components/molecules/FormField";
 import Input from "@/components/atoms/Input";
 import ApperIcon from "@/components/ApperIcon";
 
-const ContactForm = ({ contact, onSave, onCancel, isEdit = false }) => {
+const ContactForm = ({ contact, onSave, onCancel, isEdit = false, service }) => {
 const [formData, setFormData] = useState({
     first_name_c: "",
     last_name_c: "",
@@ -79,12 +79,12 @@ if (!formData.first_name_c.trim()) {
     setLoading(true);
     
     try {
-      let savedContact;
+let savedContact;
       if (isEdit && contact) {
-        savedContact = await contactService.update(contact.Id, formData);
+        savedContact = await (service || contactService).update(contact.Id, formData);
         toast.success("Contact updated successfully!");
-      } else {
-        savedContact = await contactService.create(formData);
+} else {
+        savedContact = await (service || contactService).create(formData);
         toast.success("Contact created successfully!");
       }
       

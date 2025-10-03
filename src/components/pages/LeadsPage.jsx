@@ -178,12 +178,14 @@ const LeadsPage = () => {
         )}
       </div>
 
-      {/* Lead Modal */}
+{/* Lead Modal */}
       {showModal && (
         <ContactModal
+          isOpen={showModal}
           contact={editingContact}
           onClose={handleCloseModal}
           onSave={handleSaveContact}
+          isEdit={!!editingContact}
           service={leadService}
         />
       )}

@@ -115,6 +115,7 @@ return (
             onRefresh={() => setRefreshTrigger(prev => prev + 1)}
             refreshTrigger={refreshTrigger}
             service={contactService}
+            entityType="contact"
           />
         </div>
       </div>
